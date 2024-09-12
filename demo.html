@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Submission</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+<form id="submit-form" action= "" class="php-email-form" data-aos="fade-up" data-aos-delay="600" >
+    <div class="row gy-4">
+        <div class="col-md-6">
+            <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
+        </div>
+
+        <div class="col-md-6">
+            <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
+        </div>
+
+        <div class="col-md-12">
+            <input type="text" class="form-control" name="subject" placeholder="Subject" required="">
+        </div>
+
+        <div class="col-md-12">
+            <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
+        </div>
+
+        <div class="col-md-12 text-center">
+            <div class="loading">Loading</div>
+            <div class="error-message"></div>
+            <div class="sent-message">Your message has been sent. Thank you!</div>
+
+            <button type="submit">Send Message</button>
+        </div>
+    </div>
+</form><!-- End Contact Form -->
+
+<script>
+    $(document).ready(function(){
+        $("#submit-form").submit((e) => {
+            e.preventDefault();
+
+            // Add form validation
+            if (validateForm()) {
+                $.ajax({
+                    url: "https://script.google.com/macros/s/AKfycbxW3QVhkaBCLRbmy-MQc0OjC_dOBHH6XCvgGnM_GZ-2FGrJMWh9LtYrd3Wrj29zOSKaxw/exec",
+                    data: $("#submit-form").serialize(),
+                    method: "post",
+                    success: function (response) {
+                        alert("Form submitted successfully");
+                        window.location.reload();
+                        // window.location.href="https://google.com";  // Optional redirect
+                    },
+                    error: function (err) {
+                        alert("Something Error");
+                    }
+                });
+            }
+        });
+
+        function validateForm() {
+            let isValid = true;
+
+            // Basic validation for empty fields
+            $('input, textarea').each(function () {
+                if ($(this).val() === "") {
+                    isValid = false;
+                    alert("Please fill all fields");
+                    return false;  // exit the loop if an empty field is found
+                }
+            });
+
+            return isValid;
+        }
+    });
+</script>
+
+</body>
+</html>
