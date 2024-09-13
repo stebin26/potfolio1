@@ -327,32 +327,54 @@
 //       }
 //       })
 //     })
-$("#submit-form").submit((e) => {
-  e.preventDefault();
-
-  // Show loading message
-  $(".loading").show();
-
-  $.ajax({
-    url: "https://script.google.com/macros/s/AKfycbw37yq33OMsMCTRV3j_1gchewjox1kndwQIzgGEM1D7ruVpFvfMVBGk7ZWMPxwtLAkw/exec",
-    data: $("#submit-form").serialize(),
-    method: "post",
-    success: function(response) {
-      // Hide loading message
-      $(".loading").hide();
-
-      // Show the sent message
-      $(".sent-message").show();
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('submit-form').addEventListener('submit', function(event) {
+    var email = document.querySelector('input[name="email"]').value;
+    // var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    let isValidEmail = !validateEmail(email);
+    console.log("Hello");
+    console.log(isValidEmail);
+    if (isValidEmail) {
+      alert('You have entered an invalid email address!!!!');
+      event.preventDefault(); // Prevent the form from submitting
+    } else {
+      $("#submit-form").submit((e) => {
+        e.preventDefault();
       
-      // Optionally, you can hide the form if you want after successful submission
-      // $("#submit-form").hide();
-    },
-    error: function(err) {
-      // Hide loading message
-      $(".loading").hide();
-
-      // Show error message
-      $(".error-message").text("Something went wrong. Please try again.").show();
+        // Show loading message
+        $(".loading").show();
+      
+        $.ajax({
+          url: "https://script.google.com/macros/s/AKfycbw37yq33OMsMCTRV3j_1gchewjox1kndwQIzgGEM1D7ruVpFvfMVBGk7ZWMPxwtLAkw/exec",
+          data: $("#submit-form").serialize(),
+          method: "post",
+          success: function(response) {
+            // Hide loading message
+            $(".loading").hide();
+      
+            // Show the sent message
+            $(".sent-message").show();
+            
+            // Optionally, you can hide the form if you want after successful submission
+            // $("#submit-form").hide();
+          },
+          error: function(err) {
+            // Hide loading message
+            $(".loading").hide();
+      
+            // Show error message
+            $(".error-message").text("Something went wrong. Please try again.").show();
+          }
+        });
+      });
     }
   });
 });
+
+const validateEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
